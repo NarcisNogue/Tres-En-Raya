@@ -8,7 +8,7 @@ class Utils {
   }
 
   playIA(board, player) {
-    // Temp function to test frontend, plays randomly
+    // TODO: Temp function to test frontend, plays randomly
     let indexes = []
     board.forEach((square, i) => {
       if(square === null) indexes.push(i);
