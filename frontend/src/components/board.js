@@ -12,8 +12,20 @@ function Board() {
   const onClickSquare = (square) => {
     if(player === null || boardState[square] !== null) return;
     let board = boardState.slice();
-    board = Utils.onClickSquare(board, square, player);
-    setBoardState(board);
+    board[square] = player;
+    Utils.playIA(board, player).then(res => {
+      if(res.statusText === "OK") {
+        if(res.data.result !== 0) {
+          // TODO: Process endgame
+          console.log("game ended, result: " + res.data.result);
+        } else {
+          setBoardState(res.data.board);
+        }
+      } else {
+        console.error("Servidor no disponible");
+      }
+      console.log(res);
+    });
   }
 
   const onSelectPlayer = (pl) => {
@@ -21,8 +33,10 @@ function Board() {
     setPlayer(pl);
     if(pl === "O") { //If we are O, computer plays first
       let board = boardState.slice();
-      board = Utils.playIA(board, pl);
-      setBoardState(board);
+      Utils.playIA(board, pl).then(res => {
+        console.log(res);
+      });
+      // setBoardState(board);
     }
   }
 

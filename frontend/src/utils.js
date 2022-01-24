@@ -1,4 +1,5 @@
 const _ = require("underscore")
+const axios = require('axios').default;
 
 class Utils {
   onClickSquare(board, square, player) {
@@ -8,14 +9,15 @@ class Utils {
   }
 
   playIA(board, player) {
-    // TODO: Temp function to test frontend, plays randomly
-    let indexes = []
-    board.forEach((square, i) => {
-      if(square === null) indexes.push(i);
+    // TODO: Put url and port in .env file
+    return axios.post('http://localhost:3001/game/getMove', {board, player})
+    .then(resp => {
+        return resp;
+    })
+    .catch(err => {
+        // Handle Error Here
+        console.error(err);
     });
-    let index = _.sample(indexes);
-    board[index] = player === "X" ? "O" : "X";
-    return board;
   }
 }
 
