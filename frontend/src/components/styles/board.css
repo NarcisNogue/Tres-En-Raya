@@ -1,5 +1,14 @@
 .board {
+    --square-side: min(20vh, 20vw);
+
+    display: -ms-grid;
     display: grid;
-    grid-template-columns: 20vh 20vh 20vh;
-    grid-template-rows: 20vh 20vh 20vh;
+    -ms-grid-columns: repeat(3, var(--square-side));
+    grid-template-columns: repeat(3, var(--square-side));
+    -ms-grid-rows: repeat(3, var(--square-side));
+    grid-template-rows: repeat(3, var(--square-side));
+    width: calc(var(--square-side)*3);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
 }

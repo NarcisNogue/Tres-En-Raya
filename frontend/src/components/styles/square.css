@@ -1,5 +1,5 @@
 .square {
     background-color: white;
     padding: 0;
-    font-size: 50px;
+    font-size: min(5vh, 5vw);
 }
