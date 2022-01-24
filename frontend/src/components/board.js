@@ -9,14 +9,24 @@ function Board() {
   const [player, setPlayer] = useState(null);
   const [playerName, setPlayerName] = useState(null);
 
+  /* GameState
+    0 - Game hasn't finished
+    1 - Draw
+    2 - X wins
+    3 - O wins
+    */
+  const [gameState, setGameState] = useState(0)
+
   const onClickSquare = (square) => {
-    if(player === null || boardState[square] !== null) return;
+    if(player === null || boardState[square] !== null || gameState !== 0) return;
     let board = boardState.slice();
     board[square] = player;
     Utils.playIA(board, player).then(res => {
       if(res.statusText === "OK") {
         if(res.data.result !== 0) {
-          // TODO: Process endgame
+          // TODO: Process endgame -- si guanya ordinador no es mostra la ultima posicio
+          setBoardState(board);
+          setGameState(res.data.result);
           console.log("game ended, result: " + res.data.result);
         } else {
           setBoardState(res.data.board);
@@ -34,7 +44,9 @@ function Board() {
     if(pl === "O") { //If we are O, computer plays first
       let board = boardState.slice();
       Utils.playIA(board, pl).then(res => {
-        console.log(res);
+        if(res.statusText === "OK") {
+          setBoardState(res.data.board);
+        }
       });
       // setBoardState(board);
     }

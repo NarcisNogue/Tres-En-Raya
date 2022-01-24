@@ -4,6 +4,7 @@ const _ = require("underscore");
 // *********************************************
 // PRIVATE FUNCTIONS
 // *********************************************
+
 function playIA(board, player) {
   // TODO: Temp function to test frontend, plays randomly
   console.log("HEY")
@@ -18,6 +19,32 @@ function playIA(board, player) {
 
 function getResult(board) {
     // TODO: Program winning detection logic
+    let lines = [
+      // Horizontal
+      [0,1,2],
+      [3,4,5],
+      [6,7,8],
+      // Vertical
+      [0,3,6],
+      [1,4,7],
+      [2,5,8],
+      // Diagonal
+      [0,4,8],
+      [2,4,6]
+    ]
+
+    var res = 0;
+
+    lines.forEach(line => {
+      if(!_.isNull(board[line[0]]) && board[line[0]] === board[line[1]] && board[line[1]] === board[line[2]]) {
+        res = board[line[0]] === "X" ? 2: 3
+      }
+    })
+
+    // If every square is full but still no winner it's a draw
+    if(_.filter(lines, x => {return !_.isNull(x)}).length === 0 && res === 0) {
+      res = 1;
+    }
     
     /*
     0 - Game hasn't finished
@@ -25,7 +52,7 @@ function getResult(board) {
     2 - X wins
     3 - O wins
     */
-    return 0
+    return res;
 }
 
 // ******************************************
