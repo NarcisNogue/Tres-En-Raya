@@ -1,19 +1,66 @@
 var express = require('express');
+const { max, min } = require('underscore');
 var router = express.Router();
 const _ = require("underscore");
 // *********************************************
 // PRIVATE FUNCTIONS
 // *********************************************
 
+function evalPos(board, isX, indexes, depth) { // MinMax, X wants to maximize O wants to minimize
+  // Basecase
+  let result = getResult(board)
+  if(result) {
+    switch(result){
+      case 1: // Draw
+        return 0;
+      case 2: // X wins
+        return 1 / depth;
+      case 3: // O wins
+        return -1 / depth;
+    }
+  }
+  // Evaluate positions
+  let positions = [];
+  indexes.forEach((i, index) => {
+    let b = board.slice();
+    b[i] = isX ? "X" : "O";
+    let ind = indexes.slice();
+    ind.splice(index, 1);
+    positions.push(evalPos(b, !isX, ind, depth+1));
+  })
+
+  return isX ? max(positions) : min(positions);
+}
+
 function playIA(board, player) {
-  // TODO: Temp function to test frontend, plays randomly
-  console.log("HEY")
   let indexes = []
   board.forEach((square, i) => {
     if(square === null) indexes.push(i);
   });
-  let index = _.sample(indexes);
-  board[index] = player === "X" ? "O" : "X";
+
+  // Get best index
+  let best = player === "X" ? 2 : -2;
+  let bestIndex = null;
+  indexes.forEach((i, index) => {
+    let b = board.slice();
+    b[i] = player === "X" ? "O" : "X";
+    let ind = indexes.slice();
+    ind.splice(index, 1);
+    if(player === "X") {
+      let eval = evalPos(b, true, ind, 1);
+      if(eval < best) {
+        best = eval;
+        bestIndex = i;
+      }
+    } else {
+      let eval = evalPos(b, false, ind, 1);
+      if(eval > best) {
+        best = eval;
+        bestIndex = i;
+      }
+    }
+  });
+  board[bestIndex] = player === "X" ? "O" : "X";
   return board;
 }
 
@@ -42,7 +89,7 @@ function getResult(board) {
     })
 
     // If every square is full but still no winner it's a draw
-    if(_.filter(lines, x => {return !_.isNull(x)}).length === 0 && res === 0) {
+    if(_.filter(board, x => {return _.isNull(x)}).length === 0 && res === 0) {
       res = 1;
     }
     
@@ -61,8 +108,6 @@ function getResult(board) {
 
 /* GET move. */
 router.post('/getMove', function(req, res, next) {
-  // console.log(req.body.board);
-  // console.log(req.body)
   if(_.isUndefined(req.body.board) || !_.isArray(req.body.board) || req.body.board.length != 9) {
     res.status(400).send("Board must be an array of lenght 9");
   }
@@ -72,8 +117,15 @@ router.post('/getMove', function(req, res, next) {
   let board = req.body.board;
   let player = req.body.player;
   let ret = {}
-  ret.board = playIA(board, player);
-  ret.result = getResult(board);
+  
+  let currResult = getResult(board);
+  if(currResult) {
+    ret.board = board;
+    ret.result = currResult;
+  } else {
+    ret.board = playIA(board, player);
+    ret.result = getResult(board);
+  }
   res.send(ret);
 });
 

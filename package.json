@@ -1,0 +1,24 @@
+{
+  "name": "tres-en-raya",
+  "version": "1.0.0",
+  "description": "Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd backend && nodemon start\" \"cd frontend && npm start\" ",
+    "start": "concurrently \"cd backend && node start\" \"cd frontend && npm start\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NarcisNogue/Tres-En-Raya.git"
+  },
+  "author": "Narcis Nogue Bonet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NarcisNogue/Tres-En-Raya/issues"
+  },
+  "homepage": "https://github.com/NarcisNogue/Tres-En-Raya#readme",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

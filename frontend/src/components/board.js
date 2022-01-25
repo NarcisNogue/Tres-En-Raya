@@ -8,14 +8,14 @@ function Board() {
   const [boardState, setBoardState] = useState(Array(9).fill(null))
   const [player, setPlayer] = useState(null);
   const [playerName, setPlayerName] = useState(null);
-
+  const [gameState, setGameState] = useState(0)
   /* GameState
     0 - Game hasn't finished
     1 - Draw
     2 - X wins
     3 - O wins
     */
-  const [gameState, setGameState] = useState(0)
+   
 
   const onClickSquare = (square) => {
     if(player === null || boardState[square] !== null || gameState !== 0) return;
@@ -24,15 +24,12 @@ function Board() {
     Utils.playIA(board, player).then(res => {
       if(res.statusText === "OK") {
         if(res.data.result !== 0) {
-          // TODO: Process endgame -- si guanya ordinador no es mostra la ultima posicio
-          setBoardState(board);
           setGameState(res.data.result);
           console.log("game ended, result: " + res.data.result);
-        } else {
-          setBoardState(res.data.board);
         }
+        setBoardState(res.data.board);
       } else {
-        console.error("Servidor no disponible");
+        console.error("Server not available");
       }
       console.log(res);
     });
