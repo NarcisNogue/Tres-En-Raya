@@ -48,13 +48,13 @@ function playIA(board, player) {
     ind.splice(index, 1);
     if(player === "X") {
       let eval = evalPos(b, true, ind, 1);
-      if(eval < best) {
+      if(eval < best || (eval === best && Math.random() > 0.7)) {
         best = eval;
         bestIndex = i;
       }
     } else {
       let eval = evalPos(b, false, ind, 1);
-      if(eval > best) {
+      if(eval > best || (eval === best && Math.random() > 0.7)) {
         best = eval;
         bestIndex = i;
       }
