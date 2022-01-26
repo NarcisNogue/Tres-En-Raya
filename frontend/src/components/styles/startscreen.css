@@ -1,0 +1,38 @@
+.startScreen {
+    position: absolute;
+    margin-left: 50%;
+    margin-top: 20vh;
+    transform: translateX(-50%);
+    background: white;
+    z-index: 1;
+    border: solid #544343;
+    border-radius: 10px;
+    width: min(80%, 600px);
+    /* height: 200px; */
+    padding: 10px;
+    padding-bottom: 30px;
+    justify-content: center;
+    align-items:center;
+    background-color: #F4F1BB;
+}
+
+.startScreen .startScreenNameInput {
+    font-size: 30px;
+    width: 90%;
+    text-align: center;
+    margin: 10px;
+    margin-top: 20px;
+}
+
+.startScreen .startScreenButton {
+    width: 90%;
+    font-size: 30px;
+    margin: 10px 5px 0 5px;
+    background-color: #ED6A5A;
+}
+
+@media (min-width: 600px) {
+    .startScreen .startScreenButton {
+        width: 45%;
+    }
+}

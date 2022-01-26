@@ -5,11 +5,14 @@ import StartScreen from "./startscreen.js"
 import FooterButtons from "./footerbuttons.js"
 import Utils from "../utils.js"
 
+const circle = 'U+25EF'
+
 function Board() {
   const [boardState, setBoardState] = useState(Array(9).fill(null))
   const [player, setPlayer] = useState(null);
   const [playerName, setPlayerName] = useState("");
   const [gameState, setGameState] = useState(0)
+  const [gameStateString, setGameStateString] = useState("");
   /* GameState
     0 - Game hasn't finished
     1 - Draw
@@ -26,6 +29,7 @@ function Board() {
       if(res.statusText === "OK") {
         if(res.data.result !== 0) {
           setGameState(res.data.result);
+          setGameStateString((res.data.result === 1 ? "¡EMPATE!" : res.data.result === 2 ? "¡X HA GANADO!" : " ¡O HA GANADO!") )
           console.log("game ended, result: " + res.data.result);
         }
         setBoardState(res.data.board);
@@ -55,7 +59,7 @@ function Board() {
   }
 
   const onReset = () => {
-    setPlayerName("");
+    // setPlayerName("");
     setBoardState(Array(9).fill(null));
     setPlayer(null);
     setGameState(0);
@@ -64,7 +68,8 @@ function Board() {
   return (
     <div className="game">
       <StartScreen click={onSelectPlayer} onChangeName={onChangeName} currPlayer={player} currPlayerName={playerName}/>
-      <p>{player ? "Jugando como " + player : "Selecciona jugador"}</p>
+      <h2><b>{gameState !== 0 ? gameStateString : null}</b></h2>
+      <p>{player ? "Jugando como " + player : null}</p>
       <p>{playerName && player ? "Nombre: " + playerName : null}</p>
       <div className="board">
         {  

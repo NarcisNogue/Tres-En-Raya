@@ -1,5 +1,5 @@
 .board {
-    --square-side: min(20vh, 20vw);
+    --square-side: min(20vh, 30vw);
 
     display: -ms-grid;
     display: grid;
@@ -10,5 +10,4 @@
     width: calc(var(--square-side)*3);
     margin-left: 50%;
     transform: translateX(-50%);
-    background-color: red;
 }
