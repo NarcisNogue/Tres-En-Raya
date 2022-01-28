@@ -1,6 +1,5 @@
 .board {
-    --square-side: min(20vh, 30vw);
-
+    --square-side: min(20vh, 25vw);
     display: -ms-grid;
     display: grid;
     -ms-grid-columns: repeat(3, var(--square-side));
@@ -10,4 +9,12 @@
     width: calc(var(--square-side)*3);
     margin-left: 50%;
     transform: translateX(-50%);
+}
+
+.game h2 {
+    height: 30px;
+}
+
+.game p {
+    height: 20px;
 }

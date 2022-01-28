@@ -1,0 +1,24 @@
+.ranking{
+    border: solid black;
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 80vh;
+    width: min(80vw, 800px);
+}
+
+.ranking .closeButton {
+    float: right;
+    border: none;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    background: #ED6A5A;
+}
+
+.ranking.loading table {
+    display: none;
+}

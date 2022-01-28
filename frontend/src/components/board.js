@@ -3,9 +3,8 @@ import React, {useState} from 'react'
 import Square from "./square.js"
 import StartScreen from "./startscreen.js"
 import FooterButtons from "./footerbuttons.js"
+import Ranking from "./ranking"
 import Utils from "../utils.js"
-
-const circle = 'U+25EF'
 
 function Board() {
   const [boardState, setBoardState] = useState(Array(9).fill(null))
@@ -13,12 +12,15 @@ function Board() {
   const [playerName, setPlayerName] = useState("");
   const [gameState, setGameState] = useState(0)
   const [gameStateString, setGameStateString] = useState("");
+  const [showRanking, setShowRanking] = useState(false);
   /* GameState
     0 - Game hasn't finished
     1 - Draw
     2 - X wins
     3 - O wins
     */
+  const [ranking, setRanking] = useState([]);
+  const [rankingLoading, setRankingLoading] = useState(false);
 
 
   const onClickSquare = (square) => {
@@ -65,6 +67,23 @@ function Board() {
     setGameState(0);
   }
 
+  const onCloseRanking = () => {
+    setShowRanking(false);
+  }
+
+  const onShowRanking = () => {
+    Utils.getRanking().then(res => {
+      if(res.statusText === "OK") {
+        setRanking(res.data);
+        setRankingLoading(false);
+      }
+    })
+    setRanking([]);
+    setRankingLoading(true);
+    setShowRanking(true);
+  }
+
+
   return (
     <div className="game">
       <StartScreen click={onSelectPlayer} onChangeName={onChangeName} currPlayer={player} currPlayerName={playerName}/>
@@ -78,7 +97,8 @@ function Board() {
           })
         }
       </div>
-      <FooterButtons onReset={onReset}/>
+      {showRanking ? <Ranking onClose={onCloseRanking} ranking={ranking} loading={rankingLoading}/> : null}
+      <FooterButtons onReset={onReset} onShowRanking={onShowRanking}/>
     </div>
   );
 }

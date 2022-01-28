@@ -1,0 +1,13 @@
+.footerButtons .footerButton {
+    width: 80vmin;
+    font-size: min(30px, 5vw);
+    margin: 20px 5px 0 5px;
+    background-color: #ED6A5A;
+    border-radius: 10px;
+}
+
+@media (min-width: 600px) {
+    .footerButtons .footerButton {
+        width: 30vmin;
+    }
+}

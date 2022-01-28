@@ -1,4 +1,4 @@
-const _ = require("underscore")
+// const _ = require("underscore")
 const axios = require('axios').default;
 
 class Utils {
@@ -8,7 +8,7 @@ class Utils {
     return board;
   }
 
-  playIA(board, player) {
+  async playIA(board, player) {
     // TODO: Put url and port in .env file
     return axios.post('http://localhost:3001/game/getMove', {board, player})
     .then(resp => {
@@ -17,6 +17,13 @@ class Utils {
     .catch(err => {
         // Handle Error Here
         console.error(err);
+    });
+  }
+
+  async getRanking() {
+    return axios.get('http://localhost:3001/database/getAll')
+    .then(resp => {
+      return resp;
     });
   }
 }
